@@ -1,0 +1,16 @@
+*.log
+*.pot
+*.pyc
+__pycache__/
+.cache
+
+node_modules/
+temp/*
+venv/*
+media/*
+documents
+.vscode
+markdown-cheat-sheet.md
+coming-soon/
+.github/
+celery/

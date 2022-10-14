@@ -1,0 +1,53 @@
+version: "3.3"
+services:
+  # Nginx
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile.prod
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+
+  # Redis
+  redis:
+    image: redis:6.2-alpine
+    container_name: redis
+    restart: always
+
+  # Celery Worker for the Backend
+  celery:
+    build:
+      context: .
+      dockerfile: ./celery/Dockerfile.prod
+    container_name: celery
+    restart: always
+    env_file:
+      - ./.env
+    depends_on:
+      - backend
+      - redis
+    volumes:
+      - .:/django
+
+  # Django Backend
+  backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.prod
+    container_name: django_backend
+    restart: always
+    volumes:
+      - .:/django
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+
+  # Stripe Webhook
+  stripe:
+    image: stripe/stripe-cli:latest
+    container_name: stripe_wh_listener
+    restart: always
+    command: listen --api-key ${VEETA_STRIPE_RESTRICTED_KEY} --forward-to backend:8000/payments/webhook/

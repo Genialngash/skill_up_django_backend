@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://js.stripe.com/v3/"></script>
+    <title>Django + Stripe Checkout</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
+    ></script>
+
+    <style>
+      button {
+        background: #5469d4;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        border-radius: 0 0 4px 4px;
+        border: 0;
+        padding: 12px 16px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        display: block;
+        transition: all 0.2s ease;
+        box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+        width: 100%;
+      }
+      button:hover {
+        filter: contrast(115%);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      .unlock-pkg {
+        width: 100%;
+        align-self: center;
+        box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
+          0px 2px 5px 0px rgba(50, 50, 93, 0.1),
+          0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+        border-radius: 7px;
+        padding: 20px 16px;
+      }
+
+      .pkg-wrapper {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(3, 1fr);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="section">
+      <div>
+        {% for pkg in pro_subscriptions %}
+        <div class="unlock-pkg">
+          <h6>{{pkg.title}}</h6>
+          <p>{{pkg.description}}</p>
+          <form id="subscription">
+            <input
+              type="hidden"
+              id="sub_stripe_product_id"
+              value="{{pkg.stripe_product_id}}"
+            />
+            <input type="hidden" id="sub_package_type" value="all_access_sub" />
+            <input
+              type="hidden"
+              id="sub_user_email"
+              value="stephanie.baker@company.com"
+            />
+            <button type="submit">Purchase Subscription</button>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="pkg-wrapper" style="margin-top: 2rem">
+        {% for pkg in anonymous_unlocks_packages %}
+        <div class="unlock-pkg">
+          <h6>{{pkg.title}}</h6>
+          <p>{{pkg.description}}</p>
+
+          <form id="payment">
+            <input
+              type="hidden"
+              id="stripe_product_id"
+              value="{{pkg.stripe_product_id}}"
+            />
+            <input type="hidden" id="package_type" value="unlock_code" />
+            <button type="submit">Purchase Plan</button>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+
+      <script type="text/javascript">
+        fetch("http://localhost:8000/payments/config/")
+          .then((result) => {
+            return result.json();
+          })
+          .then((data) => {
+            // Initialize Stripe.js
+            const stripe = Stripe(data.publicKey);
+            var unlocksForm = document.getElementById("payment");
+            var subForm = document.getElementById("subscription");
+
+            // Subscription
+            subForm.addEventListener("submit", function (event) {
+              event.preventDefault();
+              // Complete payment when the submit button is clicked
+              const user_email =
+                document.getElementById("sub_user_email").value;
+              const prdct_id = document.getElementById(
+                "sub_stripe_product_id"
+              ).value;
+              const package_type =
+                document.getElementById("sub_package_type").value;
+
+              const payload = {
+                user_email: user_email,
+                package_type: package_type,
+                stripe_product_id: prdct_id,
+              };
+
+              console.log(payload);
+
+              fetch("http://localhost:8000/payments/create-checkout-session/", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+              })
+                .then(function (result) {
+                  return result.json();
+                })
+                .then(function (data) {
+                  console.log(data);
+
+                  if (data.current_subscription_status) {
+                    alert(data.message);
+                    window.location.pathname = "/payments/";
+                  }
+
+                  if (!data.current_subscription_status) {
+                    stripe.redirectToCheckout({ sessionId: data.session_id });
+                  }
+                });
+            });
+
+            // Unlocks
+            unlocksForm.addEventListener("submit", function (event) {
+              event.preventDefault();
+              // Complete payment when the submit button is clicked
+              const prdct_id =
+                document.getElementById("stripe_product_id").value;
+              const package_type =
+                document.getElementById("package_type").value;
+
+              console.log(prdct_id);
+
+              fetch("http://localhost:8000/payments/create-checkout-session/", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+
+                body: JSON.stringify({
+                  package_type: package_type,
+                  stripe_product_id: prdct_id,
+                }),
+              })
+                .then(function (result) {
+                  return result.json();
+                })
+                .then(function (data) {
+                  console.log(data);
+                  stripe.redirectToCheckout({ sessionId: data.session_id });
+
+                  if (data.current_subscription_status) {
+                    alert(data.message);
+                    window.location.pathname = "/payments/";
+                  }
+
+                  if (!data.current_subscription_status) {
+                    // payWithCard(stripe, card, data.client_secret);
+                  }
+                });
+            });
+          })
+          .catch((err) => {
+            // error loading public key
+            console.log(err);
+            alert("Something went wrong...");
+          });
+      </script>
+    </section>
+  </body>
+</html>

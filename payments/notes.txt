@@ -1,0 +1,9 @@
+STRIPE_CARDS=https://stripe.com/docs/testing
+WEB_HOOKS=https://stripe.com/docs/billing/subscriptions/webhooks
+CHECKOUT_SESSION_CUSTOMERS=https://stackoverflow.com/questions/70801558/stripe-checkout-avoid-creating-new-customer-for-every-payment
+
+
+
+https://forms.office.com/Pages/ResponsePage.aspx?id=L7WHRBjxMEi0nTwpjLcQdeknf3-sRLFPmykZqIXLfgBUOE9YSlNUTjRQMUNYUklMQUs4UzIzU1RJRi4u
+
+

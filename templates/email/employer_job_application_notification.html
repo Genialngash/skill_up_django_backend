@@ -1,0 +1,12 @@
+{% load i18n %} 
+{% block html_body %}
+
+<p>Hello {{ employer_first_name }}. {{ last_applicant_name }} and a few other users 
+have shown interest in a job role that you posted on Veeta.</p>
+<p>Head on to {{ employer_dashboard_url }} to see their profiles and 
+evaluate their competency for the job.</p>
+
+<p>Thanks for using our site!</p>
+<p>The {{ site_name }} Team.</p>
+
+{% endblock html_body %}

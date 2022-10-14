@@ -1,0 +1,16 @@
+@import "~bootstrap/scss/bootstrap";
+
+@import './abstract/variable';
+@import './abstract/mixins';
+
+@import './global/reset';
+@import './global/global';
+
+@import './components/layout/navbar';
+@import './components/layout/footer';
+@import './components/banner';
+
+
+
+
+

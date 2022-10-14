@@ -1,0 +1,7 @@
+{% load i18n %}
+Hello {{ employer_first_name }}. {{ last_applicant_name }} and a few other users
+have shown interest in a job role that you posted. 
+Head on to {{ employer_dashboard_url }} to evaluate them.
+
+Thanks for using our site!
+The {{ site_name }} Team.

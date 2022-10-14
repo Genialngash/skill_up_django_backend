@@ -1,0 +1,6 @@
+{% load i18n %}
+Cron job ran and terminated successfully.
+{{total_codes_updated}} access packages were updated.
+
+Date: {{ date }}
+Server Name: {{ server_name }}

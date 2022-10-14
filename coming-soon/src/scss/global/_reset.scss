@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap");
+
+*,
+html,
+body {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: auto;
+  max-width: 1920px;
+  // background-color: $black;
+  font-family: "Cairo", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button {
+  font-family: "Kanit", sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  margin: 0;
+}
+
+img {
+  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+}
+
+.btn-check:focus + .btn,
+.btn:focus {
+  box-shadow: none;
+}
+
+form input:focus,
+.form-control:focus,
+.form-select:focus {
+  box-shadow: none;
+}
+
+//overwrite bootstrap container responsive screen size
+@media screen and (min-width: 1200px) {
+  .container {
+    max-width: 1180px !important;
+  }
+}
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .container {
+    min-width: 95%;
+  }
+}

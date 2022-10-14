@@ -1,0 +1,129 @@
+//custom heading font size
+h2 {
+  font-size: 2.25rem; //36px;
+  font-weight: bold;
+}
+h4 {
+  font-size: 1.5625rem; //25px;
+  font-weight: bold;
+}
+h5 {
+  font-size: 1.125rem; //18px;
+  font-weight: bold;
+}
+
+h6 {
+  font-size: 1rem; //16px;
+  font-weight: 500;
+}
+
+//font sizes
+.font-16 {
+  font-size: 1rem; //16px;
+}
+.font-18 {
+  font-size: 1.125rem; // 18px
+}
+.font-20 {
+  font-size: 1.25rem; // 20px
+}
+.font-22 {
+  font-size: 1.375rem; // 22px
+}
+.font-24 {
+  font-size: 1.5rem; //24px;
+}
+.font-46 {
+  font-size: 2.875rem; //46px;
+}
+
+@media screen and (max-width: 768px) {
+  h2{
+    font-size: 1.5rem; //24px;
+  }
+  h4,
+  .font-24 {
+    font-size: 1.25rem; //20px;
+  }
+  h5,
+  .font-18 {
+    font-size: 1rem; //16px;
+  }
+  .font-22,
+  .font-20 {
+    font-size: 1.125rem; //18px;
+  }
+  .font-46 {
+    font-size: 2.25rem; //36px;
+  }
+}
+
+.h-4 {
+  height: 4.7rem;
+}
+
+//css for text color
+.text-black {
+  color: $black;
+}
+.text-green {
+  color: $green;
+}
+.text-light-green {
+  color: $light-green;
+}
+.text-red {
+  color: $red;
+}
+.text-reddish {
+  color: $reddish;
+}
+.text-blue {
+  color: $blue;
+}
+.text-orange {
+  color: $orange;
+}
+//css for background color
+.bg-black {
+  background: $black;
+}
+.bg-gradient-green {
+  background: $gradient-green;
+}
+
+//custom button
+.btn-gradient {
+  padding: 0.25rem 1rem;
+  background: $gradient-green !important;
+  color: $white;
+  border-radius: 50px;
+  border: none;
+  min-height: 30px;
+
+  &:hover {
+    box-shadow: 0px 3px 8px rgba(243, 111, 86, 0.48);
+  }
+}
+
+.green-yellowish-btn {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 218, 73, 0.99) -13.53%,
+    rgba(255, 245, 0, 0.99) 100%
+  ) !important;
+  border-radius: 10px;
+  color: $black;
+  padding: 0.25rem 1rem;
+  border: none;
+  min-height: 30px;
+
+  &:hover {
+    box-shadow: 0px 3px 8px rgba(243, 111, 86, 0.48);
+  }
+}
+//spinner css when first time load
+.spinner-grow {
+  width: 4rem !important;
+  height: 4rem !important;
+}

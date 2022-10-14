@@ -1,0 +1,10 @@
+version: "3.3"
+services:
+  # Coming Soon
+  coming_soon:
+    build:
+      context: ./coming-soon
+    container_name: coming_soon
+    restart: always
+    ports:
+      - 80:80

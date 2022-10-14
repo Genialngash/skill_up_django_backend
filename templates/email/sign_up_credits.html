@@ -1,0 +1,10 @@
+{% load i18n %} 
+{% block html_body %}
+<p>Thank you for signing up at {{ site_name }}.</p>
+<p>Here are some free credits to get you started on our service.</p>
+<p>Your unlock code is {{ unlock_code }} which expires on {{ expire_day }}{{date_suffix}} {{expire_month}} {{expire_year}}</p>
+<p>Visit <a href="https://veeta.co.uk/jobseeker/unlocked-profiles/{{unlock_code}}/">https://veeta.co.uk/jobseeker/unlocked-profiles/{{unlock_code}}/</a> to view your unlock history.</p>
+
+<p>{% trans "Thanks for using our site!" %}</p>
+<p>{% blocktrans %}The {{ site_name }} Team{% endblocktrans %}</p>
+{% endblock html_body %}

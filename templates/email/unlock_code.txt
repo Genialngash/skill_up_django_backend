@@ -1,0 +1,7 @@
+{% load i18n %}
+You're receiving this email because you bought some unlock credits at {{ site_name }}.
+Your unlock code is {{unlock_code}} which expires on {{ expire_day }}{{date_suffix}} {{expire_month}} {{expire_year}}.
+Visit https://veeta.co.uk/jobseeker/unlocked-profiles/{{unlock_code}}/ to view your unlock history.
+
+{% trans "Thanks for using our site!" %}
+{% blocktrans %}The {{site_name}} Team{% endblocktrans %}

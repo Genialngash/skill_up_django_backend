@@ -1,0 +1,8 @@
+{% load i18n %}
+Thank you for signing up at {{ site_name }}.
+Here are some free credits to get you started on our service.
+Your unlock code is {{unlock_code}} which expires on {{ expire_day }}{{date_suffix}} {{expire_month}} {{expire_year}}.
+Visit https://veeta.co.uk/jobseeker/unlocked-profiles/{{unlock_code}}/ to view your unlock history.
+
+{% trans "Thanks for using our site!" %}
+{% blocktrans %}The {{site_name}} Team{% endblocktrans %}

@@ -1,0 +1,62 @@
+#navbar {
+  position: fixed;
+  z-index: 11;
+  width: 100%;
+  max-width: 1920px;
+
+  nav {
+    padding-top: 0.7rem;
+  }
+  
+  .activated {
+    border-bottom: 3px solid $light-green !important;
+  }
+  .navbar-item {
+    color: #fff;
+    font-family: Kanit;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 0;
+  }
+  .signUp-btn {
+    width: 110px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .mobile-nav {
+    height: 103vh;
+    position: fixed !important;
+    background: $black;
+    z-index: 1500 !important;
+  }
+  #navbar {
+    #basic-navbar-nav {
+      max-height: calc(100vh - 100px);
+      overflow: auto;
+    }
+    .activated {
+      border-bottom: 2px solid #32cd32 !important;
+      width: min-content;
+      margin: auto;
+    }
+    .navbar-toggler {
+      border: none;
+    }
+    .toggler-main .navbar-toggler-icon {
+      background-image: url("../../../assets/icons/menu-toggler.svg");
+    }
+    .toggler-cross .navbar-toggler-icon {
+      background-image: url("../../../assets/icons/cross.svg");
+    }
+  }
+}
+
+.navbar-toggler:focus {
+  box-shadow: none !important;
+}
+
+.navbar__logo img {
+  width: 105px;
+  height: 56px;
+}

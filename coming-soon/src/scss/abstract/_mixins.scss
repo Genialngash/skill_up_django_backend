@@ -1,0 +1,12 @@
+@mixin green-gradient-text {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+  linear-gradient(90deg, #077AFB 0%, #32CD32 75.3%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+@mixin d-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

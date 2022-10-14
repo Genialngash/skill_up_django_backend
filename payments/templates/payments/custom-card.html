@@ -1,0 +1,203 @@
+<form id="payment-form">
+  <style>
+    .row {
+      display: -ms-flexbox; /* IE10 */
+      display: flex;
+      -ms-flex-wrap: wrap; /* IE10 */
+      flex-wrap: wrap;
+      margin: 0 -16px;
+    }
+
+    .col-25 {
+      -ms-flex: 25%; /* IE10 */
+      flex: 25%;
+    }
+
+    .col-50 {
+      -ms-flex: 50%; /* IE10 */
+      flex: 50%;
+    }
+
+    .col-75 {
+      -ms-flex: 75%; /* IE10 */
+      flex: 75%;
+    }
+
+    .col-25,
+    .col-50,
+    .col-75 {
+      padding: 0 16px;
+    }
+
+    .container {
+      background-color: #f2f2f2;
+      padding: 5px 20px 15px 20px;
+      border: 1px solid lightgrey;
+      border-radius: 3px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      margin-bottom: 20px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    label {
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .icon-container {
+      margin-bottom: 20px;
+      padding: 7px 0;
+      font-size: 24px;
+    }
+
+    .btn {
+      background-color: #04aa6d;
+      color: white;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      width: 100%;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    span.price {
+      float: right;
+      color: grey;
+    }
+
+    /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (and change the direction - make the "cart" column go on top) */
+    @media (max-width: 800px) {
+      .row {
+        flex-direction: column-reverse;
+      }
+      .col-25 {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+  <input type="hidden" id="product_id" value="prod_LEiHQv8ohaXrLY" />
+  <input type="hidden" id="package_type" value="unlock_code" />
+
+  <div>
+    <label for="fname">Full Name</label>
+    <input type="text" id="fname" name="firstname" placeholder="John M. Doe" />
+  </div>
+
+  <div>
+    <label for="email">Email</label>
+    <input type="text" id="email" name="email" placeholder="john@example.com" />
+  </div>
+
+  <div>
+    <label for="zip">Zip</label>
+    <input type="text" id="zip" name="zip" placeholder="10001" />
+  </div>
+
+  <div>
+    <label for="ccnum">Credit card number</label>
+    <input
+      type="text"
+      id="ccnum"
+      name="cardnumber"
+      placeholder="1111-2222-3333-4444"
+    />
+  </div>
+
+  <div>
+    <label for="expmonth">Exp Month</label>
+    <input type="text" id="expmonth" name="expmonth" placeholder="September" />
+  </div>
+
+  <div class="row">
+    <div class="col-50">
+      <label for="expyear">Exp Year</label>
+      <input type="text" id="expyear" name="expyear" placeholder="2018" />
+    </div>
+
+    <div class="col-50">
+      <label for="cvv">CVV</label>
+      <input type="text" id="cvv" name="cvv" placeholder="352" />
+    </div>
+  </div>
+
+  <button>Checkout</button>
+
+  <span id="card-error"></span>
+  <span class="result-message"></span>
+</form>
+
+<script>
+  // Calls stripe.confirmCardPayment
+             // If the card requires authentication Stripe shows a pop-up modal to
+             // prompt the user to enter authentication details without leaving your page.
+             var payWithCard = function (stripe, card, client_secret) {
+               loading(true);
+               stripe
+                 .confirmCardPayment(client_secret, {
+                   payment_method: {
+                     card: card,
+                   },
+                 })
+                 .then(function (result) {
+                   if (result.error) {
+                     // Show error to your customer
+                     showError(result.error.message);
+                   } else {
+                     // The payment succeeded!
+                     orderComplete(result.paymentIntent.id);
+                   }
+                 });
+             };
+             /* ------- UI helpers ------- */
+             // Shows a success message when the payment is complete
+             var orderComplete = function (paymentIntentId) {
+               loading(false);
+               document
+                 .querySelector(".result-message a")
+                 .setAttribute(
+                   "href",
+                   "https://dashboard.stripe.com/test/payments/" +
+                     paymentIntentId
+                 );
+               document
+                 .querySelector(".result-message")
+                 .classList.remove("hidden");
+               document.querySelector("button").disabled = true;
+             };
+             // Show the customer the error from Stripe if their card fails to charge
+             var showError = function (errorMsgText) {
+               loading(false);
+               var errorMsg = document.querySelector("#card-error");
+               errorMsg.textContent = errorMsgText;
+               setTimeout(function () {
+                 errorMsg.textContent = "";
+               }, 4000);
+             };
+             // Show a spinner on payment submission
+             var loading = function (isLoading) {
+               if (isLoading) {
+                 // Disable the button and show a spinner
+                 document.querySelector("button").disabled = true;
+                 document.querySelector("#spinner").classList.remove("hidden");
+                 document.querySelector("#button-text").classList.add("hidden");
+               } else {
+                 document.querySelector("button").disabled = false;
+                 document.querySelector("#spinner").classList.add("hidden");
+                 document
+                   .querySelector("#button-text")
+                   .classList.remove("hidden");
+               }
+             };
+           })
+</script>

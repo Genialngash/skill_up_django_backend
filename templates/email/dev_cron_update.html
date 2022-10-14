@@ -1,0 +1,8 @@
+{% load i18n %} 
+{% block html_body %}
+<p>Cron job ran and terminated successfully.</p>
+<p>{{total_codes_updated}} access codes were updated.</p>
+
+<p>Date: {{ date }}</p>
+<p>Server Name: {{ server_name }}</p>
+{% endblock html_body %}
