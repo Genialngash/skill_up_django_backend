@@ -6,7 +6,15 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from establishments.views import CompanyViewSet, UserCompaniesListView
+from establishments.views import (
+        CompanyViewSet, 
+        UserCompaniesListView,
+        CoursesViewSet,
+        LessonsViewSet,
+        CompletedViewSet,
+        EnrolmentViewSet,
+        CheckerViewSet
+)
 from jobs.views import (
     AprroveJobApplicationViewSet,
     JobApplicationViewSet,
@@ -18,6 +26,7 @@ from payments import session_view
 from profile_unlock.views import UnlockedProfilesListView
 from rest_framework import routers
 from users.views import DeleteUserAccountView
+
 
 app_name = 'core'
 router = routers.DefaultRouter()
@@ -115,6 +124,22 @@ urlpatterns = [
     path('contact/', include('contact.urls')),
     path('companies/', include('establishments.urls')),
     path('jobs/', include('jobs.urls')),
+    path('course/create', CoursesViewSet.as_view({'post': 'create'})),
+    path('course/list', CoursesViewSet.as_view({'get': 'list'})),
+    path('course/get/<str:pk>/', CoursesViewSet.as_view({'get': 'retrieve'})),
+    path('lesson/create', LessonsViewSet.as_view({'post': 'create'})),
+    path('lesson/list', LessonsViewSet.as_view({'get': 'list'})),
+    path('lesson/get/<str:pk>/', LessonsViewSet.as_view({'get': 'retrieve'})),
+    path('complete/create', CompletedViewSet.as_view({'post': 'create'})),
+    path('complete/list', CompletedViewSet.as_view({'get': 'list'})),
+    path('complete/get/<str:pk>/', CompletedViewSet.as_view({'get': 'retrieve'})),
+    path('enrolment/create', EnrolmentViewSet.as_view({'post': 'create'})),
+    path('enrolment/list', EnrolmentViewSet.as_view({'get': 'list'})),
+    path('enrolment/get/<str:pk>/', EnrolmentViewSet.as_view({'get': 'retrieve'})),
+    path('enrolment/get_by_course/<str:pk>/', EnrolmentViewSet.as_view({'get': 'course_retrieve'})),
+    path('check/create', CheckerViewSet.as_view({'post': 'create'})),
+    path('check/list', CheckerViewSet.as_view({'get': 'list'})),
+    path('check/get/<str:pk>/', CheckerViewSet.as_view({'get': 'retrieve'})),
 
     path(r'job-offer/create/', create_job_offer, name='create_job_offer'),
     path(r'job-offer/delete/<int:pk>/', delete_job_offer, name='delete_job_offer'),

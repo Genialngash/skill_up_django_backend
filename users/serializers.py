@@ -301,6 +301,7 @@ class EmployerProfileSerializer(serializers.ModelSerializer):
         # Save the main employer profile instance
         return super(EmployerProfileSerializer, self).update(instance, validated_data)
 
+
 from django.db import models
 
 

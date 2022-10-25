@@ -115,6 +115,33 @@ def populate_job_card_h3_zone(sender, instance, **kwargs):
 
 post_save.connect(populate_job_card_h3_zone, sender=JobCard)
 
+class CourseCard(models.Model):
+    proffesional = models.ForeignKey(settings.EMPLOYER_PROFILE_MODEL, on_delete=models.CASCADE)
+    course_name = models.CharField(max_length=32, null=False, blank=False)
+    course_description = models.TextField(null=False, blank=False)
+
+    def __str__(self):
+        return f'{self.course_name}'
+
+class Enrolments(models.Model):
+    course = models.ForeignKey(CourseCard, on_delete=models.CASCADE,db_constraint=False)
+    by = models.ForeignKey(settings.JOBSEEKER_PROFILE_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.course.course_name} - {self.by.user.first_name}'
+
+class LessonsModule(models.Model):
+    course = models.ForeignKey(CourseCard, on_delete=models.CASCADE)
+    lesson_name = models.CharField(max_length=32, null=False, blank=False)
+    lesson_description = models.TextField(null=False, blank=False)
+
+    def __str__(self):
+        return f'{self.lesson_name}'
+
+
+class Checker(models.Model):
+    lesson = models.ForeignKey(LessonsModule, on_delete=models.CASCADE)
+    enrolment = models.ForeignKey(Enrolments, on_delete=models.CASCADE,null=True, blank=True)
 
 class JobResponsibility(models.Model):
     text = models.TextField(null=False, blank=False)
@@ -178,9 +205,17 @@ class Employee(models.Model):
     role = models.CharField(max_length=64, null=False, blank=False)
     is_active = models.BooleanField(default=True)
     joined_on =  models.DateTimeField(auto_now_add=True)
+    
 
     def __str__(self):
         return f"{ self.user.first_name } { self.user.last_name }"
     class Meta:
         verbose_name = 'Employee'
         verbose_name_plural = 'Employees'
+
+class Completed(models.Model):
+    lesson = models.ForeignKey(LessonsModule, on_delete=models.CASCADE)
+    enrolment = models.ForeignKey(Enrolments, on_delete=models.CASCADE,null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.lesson} - {self.enrolment}"

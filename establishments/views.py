@@ -6,15 +6,15 @@ from rest_framework import generics, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from users.models import EmployerProfile
+from users.models import EmployerProfile,JobseekerProfile
 from utils.pagination import VeetaBasePaginationSet
 
 from establishments import pagination, permissions, serializers
 
 from .filters import CompanyListFilter
-from .models import Company, Employee
+from .models import Company, Employee,CourseCard, LessonsModule, Completed,Enrolments,Checker
 from .permissions import IsAuthenticatedAndIsEmployer, IsAuthenticatedAndIsJobseeker
-from .serializers import CompanySerializer, EmployeeSerializer
+from .serializers import CompanySerializer, EmployeeSerializer, CourseCardSerializer, CheckerSerializer, LessonsModuleSerializer,CompletedSerializer, EnrolmentSerializer
 
 
 # COMPANY VIEWS
@@ -43,6 +43,241 @@ class UserCompaniesListView(viewsets.ViewSet):
             'message': 'Success.',
         })
 
+class CoursesViewSet(viewsets.ViewSet):
+    serializer_class = CourseCardSerializer
+    queryset = CourseCard.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        serializer = CourseCardSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response({
+                'data': serializer.data,
+                'status': 'ok',
+                'status_code': 201,
+                'message': 'Course created successfully.',
+            }, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def list(self, request, *args, **kwargs):
+        queryset = CourseCard.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({
+            'data': serializer.data,
+            'status': 'success',
+            'status_code': 200,
+            'message': 'Success.',
+        })
+
+    def get_object(self):
+        completed_id = self.kwargs.get('pk')
+        instance = EmployerProfile(id=completed_id)
+        courses = CourseCard.objects.filter(proffesional=instance)
+        return courses
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = CourseCardSerializer(instance,many=True)
+        return Response({
+            'data': serializer.data,
+            'message': 'Success.',
+            'status_code': 200,
+            'status': 'ok'
+        })
+
+class LessonsViewSet(viewsets.ViewSet):
+    serializer_class = LessonsModuleSerializer
+    queryset = LessonsModule.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        serializer = LessonsModuleSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response({
+                'data': serializer.data,
+                'status': 'ok',
+                'status_code': 201,
+                'message': 'Lesson created successfully.',
+            }, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def list(self, request, *args, **kwargs):
+        queryset = LessonsModule.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({
+            'data': serializer.data,
+            'status': 'success',
+            'status_code': 200,
+            'message': 'Success.',
+        })
+    def get_object(self):
+        completed_id = self.kwargs.get('pk')
+        instance = CourseCard(id=completed_id)
+        lessons = LessonsModule.objects.filter(course=instance)
+        return lessons
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = LessonsModuleSerializer(instance,many=True)
+        return Response({
+            'data': serializer.data,
+            'message': 'Success.',
+            'status_code': 200,
+            'status': 'ok'
+        })
+
+class EnrolmentViewSet(viewsets.ViewSet):
+    serializer_class = EnrolmentSerializer
+    queryset = Enrolments.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        print(request.user)
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response({
+                'data': serializer.data,
+                'status': 'ok',
+                'status_code': 201,
+                'message': 'Lesson created successfully.',
+            }, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def list(self, request, *args, **kwargs):
+        queryset = Enrolments.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({
+            'data': serializer.data,
+            'status': 'success',
+            'status_code': 200,
+            'message': 'Success.',
+        })
+
+    def get_object(self):
+        completed_id = self.kwargs.get('pk')
+        instance = JobseekerProfile(id=completed_id)
+        enrolments = Enrolments.objects.filter(by=instance)
+        return enrolments
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = EnrolmentSerializer(instance,many=True)
+        return Response({
+            'data': serializer.data,
+            'message': 'Success.',
+            'status_code': 200,
+            'status': 'ok'
+        })
+    def get_course_object(self):
+        completed_id = self.kwargs.get('pk')
+        instance = CourseCard(id=completed_id)
+        enrolments = Enrolments.objects.filter(course=instance)
+        return enrolments
+
+    def course_retrieve(self, request, *args, **kwargs):
+        instance = self.get_course_object()
+        serializer = EnrolmentSerializer(instance,many=True)
+        return Response({
+            'data': serializer.data,
+            'message': 'Success.',
+            'status_code': 200,
+            'status': 'ok'
+        })
+
+class CompletedViewSet(viewsets.ViewSet):
+    serializer_class = CompletedSerializer
+    queryset = Completed.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        serializer = CompletedSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response({
+                'data': serializer.data,
+                'status': 'ok',
+                'status_code': 201,
+                'message': 'Marked Complete.',
+            }, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def list(self, request, *args, **kwargs):
+        queryset = Completed.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({
+            'data': serializer.data,
+            'status': 'success',
+            'status_code': 200,
+            'message': 'Success.',
+        })
+
+    def get_object(self):
+        completed_id = self.kwargs.get('pk')
+        instance = Enrolments(id=completed_id)
+        enrolments = Completed.objects.filter(enrolment=instance)
+        return enrolments
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = CompletedSerializer(instance,many=True)
+        return Response({
+            'data': serializer.data,
+            'message': 'Success.',
+            'status_code': 200,
+            'status': 'ok'
+        })
+
+class CheckerViewSet(viewsets.ViewSet):
+    serializer_class = CheckerSerializer
+    queryset = Checker.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response({
+                'data': serializer.data,
+                'status': 'ok',
+                'status_code': 201,
+                'message': 'Check set successfully.',
+            }, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def list(self, request, *args, **kwargs):
+        queryset = Checker.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({
+            'data': serializer.data,
+            'status': 'success',
+            'status_code': 200,
+            'message': 'Success.',
+        })
+
+    def get_object(self):
+        completed_id = self.kwargs.get('pk')
+        instance = Enrolments(id=completed_id)
+        enrolments = Checker.objects.filter(enrolment=instance)
+        return enrolments
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = CheckerSerializer(instance,many=True)
+        return Response({
+            'data': serializer.data,
+            'message': 'Success.',
+            'status_code': 200,
+            'status': 'ok'
+        })
 
 class CompanyViewSet(viewsets.ViewSet):
     serializer_class = CompanySerializer

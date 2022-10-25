@@ -1,8 +1,8 @@
 from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
 from rest_framework import serializers
 from users.serializers import UserExtraSlimSerializer
-
-from .models import Company, Employee
+from users.serializers import JobseekerSlimSerializer,EmployerProfileSerializer
+from .models import Company, Employee, CourseCard, LessonsModule, Completed,Enrolments, Checker
 
 
 @extend_schema_serializer(
@@ -86,4 +86,31 @@ class EmployeeSerializer(serializers.ModelSerializer):
     company = CompanySlimSerializer()
     class Meta:
         model = Employee
-        fields = ('user', 'company', 'role', 'joined_on', 'is_active',)
+        fields = ("id",'user', 'company', 'role', 'joined_on', 'is_active',)
+
+class LessonsModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LessonsModule
+        fields = ("id","course", "lesson_name","lesson_description")
+
+class CourseCardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseCard
+        fields = ("id","proffesional", "course_name","course_description")
+
+class CompletedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Completed
+        fields = ("lesson", "enrolment","id")
+
+class CheckerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Checker
+        fields = ("lesson", "enrolment","id")
+
+class EnrolmentSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Enrolments
+        fields = ("id","course", "by")
+

@@ -347,6 +347,7 @@ class CustomRegisterView(RegisterView):
     def get_response_data(self, user):
         if allauth_settings.EMAIL_VERIFICATION == \
                 allauth_settings.EmailVerificationMethod.MANDATORY:
+            print("Yoooh")
             return {
                 'data': {
                     'first_name': user.first_name,

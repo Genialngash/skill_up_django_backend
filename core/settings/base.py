@@ -131,6 +131,7 @@ JOB_CARD_MODEL = 'establishments.JobCard'
 JOB_APPLICATION_MODEL = 'establishments.JobApplication'
 JOBSEEKER_PROFILE_MODEL = 'users.JobseekerProfile'
 JOB_BOOKMARK_MODEL = 'jobs.JobBookmark'
+EMPLOYER_PROFILE_MODEL = 'users.EmployerProfile'
 
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None

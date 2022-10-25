@@ -21,8 +21,10 @@ from phonenumber_field.modelfields import PhoneNumberField
 from profile_unlock.models import UserAccessCredit
 from profile_unlock.profile_unlock_utilities import generate_random_code
 
+
 from utils.common import get_date_suffix
 from utils.models import JobCardZoneMetadata, JobseekerZoneMetadata, h3_resolutions
+from establishments.models import CourseCard
 
 from .model_choices import (
     EDUCATION_LEVEL,
@@ -157,7 +159,7 @@ class Employer(User):
 # User Profile Models
 class JobseekerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, 
-        related_name='jobseeker_profile')
+        related_name='jobseeker_profile', db_constraint=False)
     bio = models.TextField(null=True, blank=False)
     country = models.CharField(max_length=64, null=True, blank=False)
     avg_rating = models.DecimalField(
@@ -175,7 +177,6 @@ class JobseekerProfile(models.Model):
     education_level = models.CharField(max_length=48, 
         choices=EDUCATION_LEVEL.choices, null=True, blank=False
     )
-
 
     def __str__(self):
         return self.user.email
@@ -239,7 +240,7 @@ def create_profile(sender, instance, **kwargs):
         except EmployerProfile.DoesNotExist:
             EmployerProfile.objects.create(user=instance)
 
-            # Give Employer Access Credits on Sign Up
+        # Give Employer Access Credits on Sign Up
             access_pkg = AccessPackage.objects.get(tag='trial_package')
             total_unlocks = access_pkg.unlocks
             random_code = generate_random_code()
@@ -264,6 +265,7 @@ def create_profile(sender, instance, **kwargs):
 
         # Create a jobseeker profile if it does not exist
         try:
+            print("Created")
             JobseekerProfile.objects.get(user=instance)
         except JobseekerProfile.DoesNotExist:
             JobseekerProfile.objects.create(user=instance)
