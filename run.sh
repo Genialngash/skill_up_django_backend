@@ -1,3 +1,0 @@
-export VEETA_ENV=core.settings.dev
-export DJANGO_SECRET_KEY=wa3456dgfcvbbcjk334esfgt3Q2EQD3334dfsswwfade435dghuetf
-export GOOGLE_MAPS_API_KEY=AIzaSyAwWlTCpevZJCPXpmdWs9sbupx3nCCDG04
